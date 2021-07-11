@@ -8,14 +8,26 @@ jQuery.noConflict();
   let $form = $('.js-submit-settings');
   let $cancelButton = $('.js-cancel-button');
 
-  let $postcodeField = $('#config-select-postcode');
-  let $addressField = $('#config-select-address');
-  let $suburbField = $('#config-select-suburb');
-  let $stateField = $('#config-select-state');
+  // let $postcodeField = $('#config-select-postcode');
+  // let $addressField = $('#config-select-address');
+  // let $suburbField = $('#config-select-suburb');
+  // let $stateField = $('#config-select-state');
   let fieldArr =[];
 
-  let $test = $('#test');
-  //console.log(Kuc)
+
+  let $postcodeField = $('#postcode');
+  let $addressField = $('#address');
+  let $suburbField = $('#suburb');
+  let $stateField = $('#state');
+
+
+  const configFields = $('.kintoneplugin-row');
+  console.log(configFields);
+
+  let dropdown = new Dropdown({
+    items:[],
+    value: ``
+  });
 
   
   // let dropdown = new Dropdown({
@@ -37,34 +49,50 @@ jQuery.noConflict();
    // 前回の設定情報を反映 (Bring previous configuration to the page)
    $(document).ready(()=>{
     let conf = kintone.plugin.app.getConfig(PLUGIN_ID);
-    console.log(conf);
-
-    let dropdown = new Dropdown({
-      items: [
-        {
-          label: `${conf.address}`,
-          value: `${conf.address}`,
-        }
-      ],
-      value: `${conf.address}`
-    });
+    //console.log(conf);
   
-    $test.append(dropdown.render());
+    // $test.append(dropdown.render());
   })
 
   //　フィールドの一覧を取得 (fetch fields list)
   kintone.api(kintone.api.url('/k/v1/app/form/fields.json', true), 'GET', {'app': kintone.app.getId()}, function(resp) {
     // success
     let fieldProperties = resp['properties'];
+    console.log(fieldProperties);
 
-    jQuery.each(fieldProperties, (key, value) => {
-       $postcodeField.append(`<option id="${value.code}">${value.label}</option>`);
-       $addressField.append(`<option id="${value.code}">${value.label}</option>`);
-       $suburbField.append(`<option id="${value.code}">${value.label}</option>`);
-       $stateField.append(`<option id="${value.code}">${value.label}</option>`);
-       fieldArr.push({name: value.label, code: value.code});
-    })
-    console.log(fieldArr);
+    for (let i = 0; i < configFields.length; i ++){
+      console.log(configFields[i]);
+
+      jQuery.each(fieldProperties, (key, value) => {
+
+        
+        const fieldName = value.label;
+        const fieldCode = value.code;
+
+        dropdown.addItem({
+          label: fieldName,
+          value: fieldCode
+        })
+        
+  
+        configFields[i].append(dropdown.render());
+        //  $postcodeField.append(`<option id="${value.code}">${value.label}</option>`);
+        //  $addressField.append(`<option id="${value.code}">${value.label}</option>`);
+        //  $suburbField.append(`<option id="${value.code}">${value.label}</option>`);
+        //  $stateField.append(`<option id="${value.code}">${value.label}</option>`);
+        //  fieldArr.push({name: value.label, code: value.code});
+
+        
+      })
+
+      console.log()
+
+      dropdown = new Dropdown({
+        items:[],
+        value: ``
+      });
+
+    }
   }, function(error) {
     // error
     console.log(error);
@@ -79,7 +107,7 @@ jQuery.noConflict();
 
     fieldArr.forEach((val, ind) => {
       if(val.name === $postcodeField.val()){
-        config.postcode = val.code;
+        config.postcode = {code: val.code};
       } 
       if(val.name === $addressField.val()){
         config.address = val.code;
