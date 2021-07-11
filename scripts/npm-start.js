@@ -12,4 +12,6 @@ runAll(["develop", "upload"], {
       console.log(`"npm run ${name}" was failed`);
     })
   ;
+
+  console.log();
 });
