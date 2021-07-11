@@ -1,3 +1,5 @@
+import {Dropdown} from '@kintone/kintone-ui-component/esm/js';
+
 jQuery.noConflict();
 
 (function ($, PLUGIN_ID) {
@@ -5,22 +7,50 @@ jQuery.noConflict();
 
   let $form = $('.js-submit-settings');
   let $cancelButton = $('.js-cancel-button');
+
   let $postcodeField = $('#config-select-postcode');
   let $addressField = $('#config-select-address');
   let $suburbField = $('#config-select-suburb');
   let $stateField = $('#config-select-state');
   let fieldArr =[];
+
+  let $test = $('#test');
   //console.log(Kuc)
 
-console.log();
+  
+  // let dropdown = new Dropdown({
+  //   items: [
+  //     {
+  //         label: 'Orange',
+  //         value: 'Orange',
+  //     },
+  //     {
+  //         label: 'Banana',
+  //         value: 'Banana',
+  //     }
+  //   ],
+  //   value: 'Banana'
+  // });
+
+  
 
    // 前回の設定情報を反映 (Bring previous configuration to the page)
    $(document).ready(()=>{
     let conf = kintone.plugin.app.getConfig(PLUGIN_ID);
-    
-    
+    console.log(conf);
+
+    let dropdown = new Dropdown({
+      items: [
+        {
+          label: `${conf.address}`,
+          value: `${conf.address}`,
+        }
+      ],
+      value: `${conf.address}`
+    });
+  
+    $test.append(dropdown.render());
   })
-ßß
 
   //　フィールドの一覧を取得 (fetch fields list)
   kintone.api(kintone.api.url('/k/v1/app/form/fields.json', true), 'GET', {'app': kintone.app.getId()}, function(resp) {

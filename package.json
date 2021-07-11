@@ -19,6 +19,14 @@
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
-    "puppeteer": "^2.1.0"
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@kintone/kintone-ui-component": "^0.8.0",
+    "babel-loader": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.2.6",
+    "puppeteer": "^2.1.0",
+    "style-loader": "^3.0.0",
+    "tslib": "^2.3.0"
   }
 }
