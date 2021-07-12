@@ -46,6 +46,8 @@ jQuery.noConflict();
     // success　取得に成功した場合
 
     let fieldProperties = resp['properties'];
+    let conf = kintone.plugin.app.getConfig(PLUGIN_ID);
+    console.log(conf);
 
     for (let i = 0; i < $configFields.length; i ++){
       
@@ -55,6 +57,8 @@ jQuery.noConflict();
           label: value.label,
           value: value.code
         })
+
+        // dropdown.setValue
       })
 
       dropdownCopy = JSON.parse(JSON.stringify(dropdown.itemComps));
@@ -84,7 +88,7 @@ jQuery.noConflict();
       let selectedValue = $valueFields[i].innerText;
       for (let j = 0; j < dropdownCopy.length; j++){
         if(dropdownCopy[j]._props.item.label == selectedValue){
-          config[`${selectedValue}`] = dropdownCopy[j]._props.item.value;
+          config[`${i}`] = dropdownCopy[j]._props.item.value;
         }
       } 
     }
